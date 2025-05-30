@@ -12,10 +12,8 @@ export default function InvoiceCards() {
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    console.log(filter);
-
     setLoading(true);
-    getInvoices("/invoices", filter)
+    getInvoices(filter)
       .then((res) => {
         setInvoices(res);
       })

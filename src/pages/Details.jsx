@@ -24,7 +24,7 @@ export default function Details() {
 
   useEffect(() => {
     setLoading(true);
-    getInvoice("/invoices", id)
+    getInvoice(id)
       .then((res) => {
         setInvoice(res);
       })
