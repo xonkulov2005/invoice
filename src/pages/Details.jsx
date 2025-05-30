@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteById, getInvoice } from "../request";
+import { deleteById, getInvoice, updateById } from "../request";
 import { useState, useEffect } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,11 +16,14 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
+import { useAppStore } from "../lib/zustand";
 
 export default function Details() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { updateInvices } = useAppStore();
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [invoice, setInvoice] = useState([]);
@@ -50,6 +53,21 @@ export default function Details() {
       })
       .finally(() => {
         setDeleteLoading(false);
+      });
+  }
+
+  function handleUpdate(id, data) {
+    setUpdateLoading(true);
+    updateById(id, data)
+      .then((res) => {
+        updateInvices([res]);
+        navigate(-1);
+      })
+      .catch(({ message }) => {
+        toast.error(message);
+      })
+      .finally(() => {
+        setUpdateLoading(false);
       });
   }
 
@@ -108,7 +126,15 @@ export default function Details() {
                 </DialogContent>
               </Dialog>
 
-              {invoice.status === "pending" && <Button>Mark as Paid</Button>}
+              {invoice.status === "pending" && (
+                <>
+                  <Button
+                    onClick={() => handleUpdate(invoice.id, { status: "paid" })}
+                  >
+                    {updateLoading ? "Loading..." : "Mark as Paid"}
+                  </Button>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>

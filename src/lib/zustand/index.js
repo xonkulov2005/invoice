@@ -7,10 +7,24 @@ export const useAppStore = create((set) => {
     themes: ["default", "rose", "blue"],
     items: [],
     setInvoices(invoices) {
-      return set((state) => {
-        return { invoices: [...state.invoices, ...invoices] };
+      return set(() => {
+        return { invoices };
       });
     },
+
+    updateInvices(newData) {
+      return set((state) => {
+        const mapped = state.invoices.map((el) => {
+          if (el.id === newData.id) {
+            return newData;
+          } else {
+            return el;
+          }
+        });
+        return { invoices: mapped };
+      });
+    },
+
     setFilter(value) {
       return set(() => {
         return { filter: value };
