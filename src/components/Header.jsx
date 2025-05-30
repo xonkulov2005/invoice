@@ -53,11 +53,12 @@ import Form from "./Form";
 // };
 
 export default function Header() {
+  const [sheetOpen, setSheetOpen] = useState(false);
   const { setFilter } = useAppStore();
   const [items, setItems] = useState({
-    draft: true,
-    paid: true,
-    pending: true,
+    draft: false,
+    paid: false,
+    pending: false,
   });
 
   function handleChange(key) {
@@ -114,7 +115,7 @@ export default function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Sheet>
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger className={buttonVariants({ variant: "default" })}>
             <PlusCircleIcon />
             New Invoices
@@ -126,7 +127,7 @@ export default function Header() {
             <SheetHeader className="sticky w-full bg-white border-b">
               <SheetTitle>Are you absolutely sure?</SheetTitle>
             </SheetHeader>
-            <Form info={null} />
+            <Form setSheetOpen={setSheetOpen} info={null} />
           </SheetContent>
         </Sheet>
       </div>

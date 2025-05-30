@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { prepareData } from "../lib/utils";
 
-export default function Form({ info }) {
+export default function Form({ info, setSheetOpen }) {
   const { items: zustandItems } = useAppStore();
   const {
     senderAddress,
@@ -30,7 +30,7 @@ export default function Form({ info }) {
     createdAt,
     items,
   } = info || {};
-
+  const { setInvoices } = useAppStore();
   const [sending, setSending] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -47,13 +47,16 @@ export default function Form({ info }) {
     });
     result.items = zustandItems;
     const readyData = prepareData(result);
+    setSending(readyData);
   }
   useEffect(() => {
     if (sending) {
       setLoading(true);
       addInvoice(sending)
         .then((res) => {
+          setInvoices([res]);
           toast.error("Succesfully added ✅");
+          setSheetOpen(false);
         })
         .catch((message) => {
           toast.error(message);

@@ -6,10 +6,9 @@ import { useAppStore } from "../lib/zustand";
 import NotFoundPage from "./NotFoundPage";
 
 export default function InvoiceCards() {
-  const { filter } = useAppStore();
+  const { filter, invoices, setInvoices } = useAppStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
     setLoading(true);
