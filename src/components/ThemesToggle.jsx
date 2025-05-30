@@ -48,16 +48,17 @@ export default function ThemesToggle() {
   }, []);
 
   return (
-    <div className="flex gap-5 md:flex-col md:items-start">
+    <div className="flex gap-5 md:gap-50 md:flex-col md:items-start">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary">
-            <span className="hidden md:block"></span>
             <ArrowBigDown />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Themes</DropdownMenuLabel>
+        <DropdownMenuContent className="w-auto bg-blue-950  p-2 rounded-2xl">
+          <DropdownMenuLabel className="text-neutral-50 font-extrabold ml-2.5">
+            Themes
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <div className="flex flex-col">
             {themes.map((el, index) => (

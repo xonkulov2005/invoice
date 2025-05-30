@@ -14,6 +14,8 @@ import { Button } from "./ui/button";
 import { useAppStore } from "../lib/zustand";
 import { addInvoice } from "../request";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { prepareData } from "../lib/utils";
 
 export default function Form({ info }) {
   const { items: zustandItems } = useAppStore();
@@ -50,11 +52,19 @@ export default function Form({ info }) {
     if (sending) {
       setLoading(true);
       addInvoice(sending)
-        .then((res) => {})
-        .catch((message) => {})
-        .finally(() => {});
+        .then((res) => {
+          toast.error("Succesfully added ✅");
+        })
+        .catch((message) => {
+          toast.error(message);
+        })
+        .finally(() => {
+          setLoading(false);
+          setSending(null);
+        });
     }
-  }, []);
+  }, [JSON.stringify(sending)]);
+
   return (
     <form onSubmit={handleSubmit} className="p-4 pt-14 ">
       {/*Bill From*/}
@@ -250,272 +260,3 @@ export default function Form({ info }) {
     </form>
   );
 }
-
-// import { Label } from "@/components/ui/label";
-// import ItemList from "./ItemList";
-// import { Input } from "./ui/input";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectGroup,
-//   SelectItem,
-//   SelectLabel,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { Button } from "./ui/button";
-// import { useAppStore } from "../lib/zustand";
-// import { addInvoice, updateById } from "../request";
-// import { useEffect, useState } from "react";
-// import { prepareData } from "../lib/utils";
-// import { toast } from "sonner";
-
-// export default function Form({ info, onSuccess }) {
-//   const { items: zustandItems, setItems } = useAppStore();
-//   const [loading, setLoading] = useState(false);
-//   const [formData, setFormData] = useState(null);
-
-//   useEffect(() => {
-//     return () => setItems([]); // Reset items when form unmounts
-//   }, [setItems]);
-
-//   useEffect(() => {
-//     const submitData = async () => {
-//       if (!formData) return;
-
-//       try {
-//         setLoading(true);
-//         let response;
-
-//         if (info?.id) {
-//           response = await updateById(info.id, formData);
-//           toast.success("Invoice updated successfully");
-//         } else {
-//           response = await addInvoice(formData);
-//           toast.success("Invoice created successfully");
-//         }
-
-//         if (onSuccess) onSuccess();
-//       } catch (error) {
-//         toast.error(error.message || "Something went wrong");
-//       } finally {
-//         setLoading(false);
-//         setFormData(null);
-//       }
-//     };
-
-//     submitData();
-//   }, [formData, info, onSuccess]);
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const formData = new FormData(e.target);
-//     const result = {
-//       status: e.nativeEvent.submitter.id || "pending",
-//       items: zustandItems,
-//     };
-
-//     formData.forEach((value, key) => {
-//       result[key] = value;
-//     });
-
-//     const readyData = prepareData(result);
-//     setFormData(readyData);
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit} className="p-4 space-y-6">
-//       {/* Bill From Section */}
-//       <div>
-//         <h3 className="text-lg font-medium mb-4">Bill From</h3>
-//         <div className="space-y-4">
-//           <div>
-//             <Label htmlFor="senderAddress-street">Street Address</Label>
-//             <Input
-//               id="senderAddress-street"
-//               name="senderAddress-street"
-//               defaultValue={info?.senderAddress?.street}
-//               required
-//             />
-//           </div>
-
-//           <div className="grid grid-cols-3 gap-4">
-//             <div>
-//               <Label htmlFor="senderAddress-city">City</Label>
-//               <Input
-//                 id="senderAddress-city"
-//                 name="senderAddress-city"
-//                 defaultValue={info?.senderAddress?.city}
-//                 required
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="senderAddress-postCode">Post Code</Label>
-//               <Input
-//                 id="senderAddress-postCode"
-//                 name="senderAddress-postCode"
-//                 defaultValue={info?.senderAddress?.postCode}
-//                 required
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="senderAddress-country">Country</Label>
-//               <Input
-//                 id="senderAddress-country"
-//                 name="senderAddress-country"
-//                 defaultValue={info?.senderAddress?.country}
-//                 required
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Bill To Section */}
-//       <div>
-//         <h3 className="text-lg font-medium mb-4">Bill To</h3>
-//         <div className="space-y-4">
-//           <div>
-//             <Label htmlFor="clientName">Client's Name</Label>
-//             <Input
-//               id="clientName"
-//               name="clientName"
-//               defaultValue={info?.clientName}
-//               required
-//             />
-//           </div>
-//           <div>
-//             <Label htmlFor="clientEmail">Client's Email</Label>
-//             <Input
-//               id="clientEmail"
-//               name="clientEmail"
-//               type="email"
-//               defaultValue={info?.clientEmail}
-//               required
-//             />
-//           </div>
-//           <div>
-//             <Label htmlFor="clientAddress-street">Street Address</Label>
-//             <Input
-//               id="clientAddress-street"
-//               name="clientAddress-street"
-//               defaultValue={info?.clientAddress?.street}
-//               required
-//             />
-//           </div>
-
-//           <div className="grid grid-cols-3 gap-4">
-//             <div>
-//               <Label htmlFor="clientAddress-city">City</Label>
-//               <Input
-//                 id="clientAddress-city"
-//                 name="clientAddress-city"
-//                 defaultValue={info?.clientAddress?.city}
-//                 required
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="clientAddress-postCode">Post Code</Label>
-//               <Input
-//                 id="clientAddress-postCode"
-//                 name="clientAddress-postCode"
-//                 defaultValue={info?.clientAddress?.postCode}
-//                 required
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="clientAddress-country">Country</Label>
-//               <Input
-//                 id="clientAddress-country"
-//                 name="clientAddress-country"
-//                 defaultValue={info?.clientAddress?.country}
-//                 required
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Invoice Details */}
-//       <div className="space-y-4">
-//         <div className="grid grid-cols-2 gap-4">
-//           <div>
-//             <Label htmlFor="createdAt">Invoice Date</Label>
-//             <Input
-//               id="createdAt"
-//               name="createdAt"
-//               type="date"
-//               defaultValue={info?.createdAt}
-//               required
-//             />
-//           </div>
-//           <div>
-//             <Label htmlFor="paymentTerms">Payment Terms</Label>
-//             <Select
-//               name="paymentTerms"
-//               defaultValue={info?.paymentTerms?.toString() || "30"}
-//             >
-//               <SelectTrigger>
-//                 <SelectValue placeholder="Select terms" />
-//               </SelectTrigger>
-//               <SelectContent>
-//                 <SelectGroup>
-//                   <SelectLabel>Payment Terms</SelectLabel>
-//                   <SelectItem value="1">Net 1 Day</SelectItem>
-//                   <SelectItem value="7">Net 7 Days</SelectItem>
-//                   <SelectItem value="14">Net 14 Days</SelectItem>
-//                   <SelectItem value="30">Net 30 Days</SelectItem>
-//                 </SelectGroup>
-//               </SelectContent>
-//             </Select>
-//           </div>
-//         </div>
-
-//         <div>
-//           <Label htmlFor="description">Project Description</Label>
-//           <Input
-//             id="description"
-//             name="description"
-//             defaultValue={info?.description}
-//             placeholder="e.g. Graphic Design Service"
-//             required
-//           />
-//         </div>
-//       </div>
-
-//       {/* Item List */}
-//       <ItemList info={info?.items} />
-
-//       {/* Form Actions */}
-//       <div className="flex justify-end gap-2 pt-4">
-//         {info ? (
-//           <>
-//             <Button type="button" variant="outline" onClick={onSuccess}>
-//               Cancel
-//             </Button>
-//             <Button type="submit" disabled={loading}>
-//               {loading ? "Saving..." : "Save Changes"}
-//             </Button>
-//           </>
-//         ) : (
-//           <>
-//             <Button type="button" variant="outline" onClick={onSuccess}>
-//               Discard
-//             </Button>
-//             <Button
-//               type="submit"
-//               id="draft"
-//               variant="secondary"
-//               disabled={loading}
-//             >
-//               {loading ? "Saving..." : "Save as Draft"}
-//             </Button>
-//             <Button type="submit" id="pending" disabled={loading}>
-//               {loading ? "Sending..." : "Save & Send"}
-//             </Button>
-//           </>
-//         )}
-//       </div>
-//     </form>
-//   );
-// }

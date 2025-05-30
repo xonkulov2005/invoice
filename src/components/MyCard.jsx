@@ -27,8 +27,8 @@ export default function MyCard({
         <div className="flex items-center justify-between">
           <CardTitle>#{id}</CardTitle>
           <CardDescription>{createdAt}</CardDescription>
-          <span>{clientName}</span>
-          <span>£ {price}</span>
+          <span className="text-[#858BB2]">{clientName}</span>
+          <span className="text-[16px] font-[700]">£ {price}</span>
           <StatusBadge status={status} />
           <ArrowRight className="text-[#7C5DFA]" />
         </div>
