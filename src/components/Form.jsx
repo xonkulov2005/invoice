@@ -269,7 +269,7 @@ export default function Form({ info, setSheetOpen }) {
       {info ? (
         <div className="flex justify-end gap-5 mt-10">
           <Button variant={"outline"}>Cancel</Button>
-          <Button disabled={loading}>
+          <Button id="edit" type="submit" disabled={loading}>
             {loading ? "Loading..." : "Save Changes"}
           </Button>
         </div>
