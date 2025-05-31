@@ -65,7 +65,7 @@ export default function Form({ info, setSheetOpen }) {
         addInvoice(sending)
           .then((res) => {
             updateInvices(res);
-            toast.error("Succesfully added ✅");
+            toast.success("Succesfully added ✅");
             setSheetOpen(false);
           })
           .catch((message) => {
