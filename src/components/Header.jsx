@@ -11,49 +11,9 @@ import { useEffect, useState } from "react";
 import { ArrowDown, PlusCircleIcon } from "lucide-react";
 import { useAppStore } from "../lib/zustand";
 import { queryGenerator } from "../lib/utils";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import Form from "./Form";
-
-// const info = {
-//   createdAt: "2021-08-18",
-//   paymentDue: "2021-08-19",
-//   description: "Re-branding",
-//   paymentTerms: 1,
-//   clientName: "Jensen Huang",
-//   clientEmail: "jensenh@mail.com",
-//   status: "paid",
-//   senderAddress: {
-//     street: "19 Union Terrace",
-//     city: "London",
-//     postCode: "E1 3EZ",
-//     country: "United Kingdom",
-//   },
-//   clientAddress: {
-//     street: "106 Kendell Street",
-//     city: "Sharrington",
-//     postCode: "NR24 5WQ",
-//     country: "United Kingdom",
-//   },
-//   items: [
-//     {
-//       name: "Brand Guidelines",
-//       quantity: 1,
-//       price: 1800.9,
-//       total: 1800.9,
-//     },
-//   ],
-//   id: 1,
-//   total: 1800.9,
-// };
 
 export default function Header() {
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const { setSheetOpen } = useAppStore();
   const { setFilter } = useAppStore();
   const [items, setItems] = useState({
     draft: false,
@@ -115,21 +75,10 @@ export default function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger className={buttonVariants({ variant: "default" })}>
-            <PlusCircleIcon />
-            New Invoices
-          </SheetTrigger>
-          <SheetContent
-            className="md:ml-[72px] md:px-14 w-full min-w-[calc(80%-72px)] min-h-[calc(100%-56px)] overflow-auto"
-            side="left"
-          >
-            <SheetHeader className="sticky w-full bg-white border-b">
-              <SheetTitle>Are you absolutely sure?</SheetTitle>
-            </SheetHeader>
-            <Form setSheetOpen={setSheetOpen} info={null} />
-          </SheetContent>
-        </Sheet>
+        <Button onClick={setSheetOpen}>
+          <PlusCircleIcon />
+          New Invoices
+        </Button>
       </div>
     </header>
   );

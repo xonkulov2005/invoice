@@ -21,7 +21,7 @@ import { useAppStore } from "../lib/zustand";
 export default function Details() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { updateInvices } = useAppStore();
+  const { updateInvices, setEditedData, setSheetOpen } = useAppStore();
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,6 +71,11 @@ export default function Details() {
       });
   }
 
+  function handleEdit(data) {
+    setSheetOpen();
+    setEditedData(data);
+  }
+
   if (loading) {
     return (
       <div className="base-container">
@@ -93,7 +98,14 @@ export default function Details() {
               <StatusBadge status={invoice.status} />
             </div>
             <div className="flex gap-3">
-              <Button variant="ghost">Edit</Button>
+              <Button
+                onClick={() => {
+                  handleEdit(invoice);
+                }}
+                variant="ghost"
+              >
+                Edit
+              </Button>
 
               <Dialog>
                 <DialogTrigger

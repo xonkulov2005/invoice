@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "./ui/button";
 import { useAppStore } from "../lib/zustand";
-import { addInvoice } from "../request";
+import { addInvoice, updateById } from "../request";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { prepareData } from "../lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export default function Form({ info, setSheetOpen }) {
   const { items: zustandItems } = useAppStore();
@@ -30,14 +31,18 @@ export default function Form({ info, setSheetOpen }) {
     createdAt,
     items,
   } = info || {};
-  const { setInvoices } = useAppStore();
+  const { updateInvices } = useAppStore();
   const [sending, setSending] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const result = { status: e.nativeEvent.submitter.id };
+    const result = {};
+    if (!info) {
+      result.status = e.nativeEvent.submitter.id;
+    }
     formData.forEach((value, key) => {
       if (key === "quantity" || key === "price" || key === "paymentTerms") {
         result[key] = Number(value);
@@ -47,26 +52,47 @@ export default function Form({ info, setSheetOpen }) {
     });
     result.items = zustandItems;
     const readyData = prepareData(result);
-    setSending(readyData);
+    setSending({
+      mode: e.nativeEvent.submitter.id === "edit" ? "edit" : "add",
+      data: readyData,
+    });
   }
+
   useEffect(() => {
     if (sending) {
       setLoading(true);
-      addInvoice(sending)
-        .then((res) => {
-          setInvoices([res]);
-          toast.error("Succesfully added ✅");
-          setSheetOpen(false);
-        })
-        .catch((message) => {
-          toast.error(message);
-        })
-        .finally(() => {
-          setLoading(false);
-          setSending(null);
-        });
+      if (sending.mode === "add") {
+        addInvoice(sending)
+          .then((res) => {
+            updateInvices(res);
+            toast.error("Succesfully added ✅");
+            setSheetOpen(false);
+          })
+          .catch((message) => {
+            toast.error(message);
+          })
+          .finally(() => {
+            setLoading(false);
+            setSending(null);
+          });
+      } else if (sending.mode === "edit") {
+        updateById(info.id, sending.data)
+          .then((res) => {
+            updateInvices(res);
+            toast.success("Succesfully edited ✅");
+            navigate(-1);
+            setSheetOpen(false);
+          })
+          .catch((message) => {
+            toast.error(message);
+          })
+          .finally(() => {
+            setLoading(false);
+            setSending(null);
+          });
+      }
     }
-  }, [JSON.stringify(sending)]);
+  }, [sending]);
 
   return (
     <form onSubmit={handleSubmit} className="p-4 pt-14 ">
