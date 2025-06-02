@@ -52,4 +52,25 @@
   .base-container {
     @apply w-full max-w-[730px] mx-auto px-5 pr-5 pl-5 md:pl-20;
   }
+
+  @media (max-width: 600px) {
+    .custom-responsive-layout {
+      display: grid;
+      text-align: center;
+    }
+    .none {
+      display: none;
+    }
+    .responsive-for-img {
+      margin-right: 24px;
+    }
+  }
+
+  @media (min-width: 601px) {
+    .custom-responsive-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
 }

@@ -21,14 +21,14 @@ function Sidebar() {
           <ThemesToggle />
         </div>
         <div>
-          <Avatar className="size-11 md:mb-6">
+          <Avatar className="size-11 md:mb-6 responsive-for-img">
             <AvatarImage src={myImg} />
             <AvatarFallback>XM</AvatarFallback>
           </Avatar>
         </div>
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetContent
-            className="md:ml-[72px] md:px-14 w-full min-w-[calc(80%-72px)] min-h-[calc(100%-56px)] overflow-auto"
+            className="md:ml-[72px] md:px-14 w-full min-w-[calc(70%-72px)] min-h-[calc(100%-56px)] overflow-auto"
             side="left"
           >
             <SheetHeader className="sticky w-full bg-white border-b">

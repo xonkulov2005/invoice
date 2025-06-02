@@ -36,14 +36,17 @@ export default function Header() {
     <header>
       <div className="base-container flex items-center justify-between py-10">
         <div>
-          <h1 className="text-[32px] font-[700]">Invoices</h1>
+          <h1 className="sm:text-[32px] font-[700] text-[20px]">Invoices</h1>
           <p className="text-[12px] font-[400] text-[#888EB0]">
             There are 7 total invoices
           </p>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className={"ml-auto mr-10"} variant="ghost">
+            <Button
+              className={"ml-auto sm:mr-10 mr-1 sm:text-sm text-[12px] font-bold"}
+              variant="ghost"
+            >
               Filter by status
               <ArrowDown />
             </Button>
@@ -75,7 +78,7 @@ export default function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button onClick={setSheetOpen}>
+        <Button onClick={setSheetOpen} className="w-25 text-[12px]">
           <PlusCircleIcon />
           New Invoices
         </Button>

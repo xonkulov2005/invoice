@@ -17,6 +17,7 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import { useAppStore } from "../lib/zustand";
+import { ArrowLeft } from "lucide-react";
 
 export default function Details() {
   const navigate = useNavigate();
@@ -76,6 +77,10 @@ export default function Details() {
     setEditedData(data);
   }
 
+  function handleLink() {
+    navigate("/");
+  }
+
   if (loading) {
     return (
       <div className="base-container">
@@ -91,6 +96,13 @@ export default function Details() {
   return (
     <div className="py-5 gap-6">
       <div className="base-container">
+        <div
+          onClick={handleLink}
+          className="text-[#7E88C3] font-bold flex items-center gap-2 mb-8 mt-3 cursor-pointer"
+        >
+          <ArrowLeft size={20}/>
+          Go back
+        </div>
         <Card>
           <CardContent className="flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -153,30 +165,32 @@ export default function Details() {
         <Card className="p-12 mt-6">
           <div className="flex justify-between mb-5">
             <div>
-              <h1 className="text-3xl font-[700]">#{invoice.id}</h1>
-              <p className="text-[#7E88C3]">{invoice.description}</p>
+              <h1 className="sm:text-lg font-[700]">#{invoice.id}</h1>
+              <p className="text-[#7E88C3] text-sm">{invoice.description}</p>
             </div>
-            <div className="text-[#7E88C3] flex flex-col items-end">
+            <div className="text-[#7E88C3] text-sm flex flex-col items-end">
               <p>19 Union Terrace</p>
               <p>London</p>
               <p>E1 3EZ</p>
               <p>United Kingdom</p>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm">
             <div>
               <div className="mb-8 gap-3">
                 <span className="text-[#7E88C3]">Invoice Date</span>
-                <p className="text-xl font-bold">{invoice.createdAt}</p>
+                <p className="sm:text-lg text-base font-bold">
+                  {invoice.createdAt}
+                </p>
               </div>
               <div className="gap-3">
                 <span className="text-[#7E88C3]">Payment Due</span>
-                <p className="text-xl font-bold">{invoice.paymentDue}</p>
+                <p className="text-lg font-bold">{invoice.paymentDue}</p>
               </div>
             </div>
             <div className="text-[#7E88C3]">
-              <p className="">Bill to</p>
-              <p className="text-xl text-[#0C0E16] font-bold">
+              <p>Bill to</p>
+              <p className="sm:text-lg text-base text-[#0C0E16] font-bold">
                 {invoice.clientName}
               </p>
               <p>84 Church Way</p>
@@ -186,7 +200,7 @@ export default function Details() {
             </div>
             <div className="text-[#7E88C3]">
               <p>Sent to</p>
-              <p className="text-xl text-[#0C0E16] font-bold">
+              <p className="sm:text-lg text-base text-[#0C0E16] font-bold break-all">
                 {invoice.clientEmail}
               </p>
             </div>
